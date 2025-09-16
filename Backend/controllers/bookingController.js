@@ -9,14 +9,13 @@ exports.createBooking = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    // Overlap check
+    // Correct Overlap check
     const overlap = await Booking.findOne({
       where: {
         vehicleId,
-        [Op.or]: [
-          { startDate: { [Op.between]: [startDate, endDate] } },
-          { endDate: { [Op.between]: [startDate, endDate] } },
-          { startDate: { [Op.lte]: startDate }, endDate: { [Op.gte]: endDate } }
+        [Op.and]: [
+          { startDate: { [Op.lte]: endDate } },
+          { endDate: { [Op.gte]: startDate } }
         ]
       }
     });
