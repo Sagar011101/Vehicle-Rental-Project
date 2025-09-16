@@ -1,34 +1,21 @@
-// backend/server.js
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-
 const { sequelize } = require("./models");
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Explicit CORS configuration for frontend on port 3000
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
-// routes
 app.use("/api/vehicle-types", require("./routes/vehicleTypes"));
 app.use("/api/vehicles", require("./routes/vehicles"));
 app.use("/api/bookings", require("./routes/bookings"));
 
-app.get("/", (req, res) => res.send("Vehicle Rental API running"));
+app.get("/", (req, res) => {
+  res.send("🚗 Vehicle Rental API is running...");
+});
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, async () => {
-  console.log(`✅ Server listening on port ${PORT}`);
-  try {
-    await sequelize.authenticate();
-    console.log("✅ Database connected");
-  } catch (err) {
-    console.error("❌ DB connection error:", err);
-      }
+sequelize.sync().then(() => {
+  app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
 });

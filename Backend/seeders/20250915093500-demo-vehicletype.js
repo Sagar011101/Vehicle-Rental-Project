@@ -2,14 +2,15 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('VehicleTypes', [
-      { name: 'Bike', wheels: 2, createdAt: new Date(), updatedAt: new Date() },
-      { name: 'Car', wheels: 4, createdAt: new Date(), updatedAt: new Date() },
-      { name: 'Truck', wheels: 6, createdAt: new Date(), updatedAt: new Date() }
+    await queryInterface.bulkInsert('VehicleTypes', [
+      { name: 'Cruiser', wheels: 2, createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Sports', wheels: 2, createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Hatchback', wheels: 4, createdAt: new Date(), updatedAt: new Date() },
+      { name: 'SUV', wheels: 4, createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Sedan', wheels: 4, createdAt: new Date(), updatedAt: new Date() }
     ]);
   },
-
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('VehicleTypes', null, {});
+    await queryInterface.bulkDelete('VehicleTypes', null, {});
   }
 };

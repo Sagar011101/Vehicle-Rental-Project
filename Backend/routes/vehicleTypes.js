@@ -1,9 +1,14 @@
-// Backend/routes/vehicleTypes.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { getVehicleTypes } = require('../controllers/vehicleTypeController');
+const { VehicleType } = require("../models");
 
-// GET /api/vehicle-types?wheels=2 or 4 (optional)
-router.get('/', getVehicleTypes);
+router.get("/", async (req, res) => {
+  try {
+    const types = await VehicleType.findAll({ order: [["id", "ASC"]] });
+    res.json(types);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;

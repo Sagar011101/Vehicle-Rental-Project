@@ -2,15 +2,27 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('Vehicles', [
-      { name: 'Honda City', typeId: 1, createdAt: new Date(), updatedAt: new Date() }, // Sedan
-      { name: 'Hyundai Creta', typeId: 2, createdAt: new Date(), updatedAt: new Date() }, // SUV
-      { name: 'Maruti Swift', typeId: 3, createdAt: new Date(), updatedAt: new Date() }, // Hatchback
-      { name: 'Royal Enfield Classic', typeId: 4, createdAt: new Date(), updatedAt: new Date() }, // Cruiser
+    // Get type IDs
+    const types = await queryInterface.sequelize.query(
+      `SELECT id, name FROM "VehicleTypes";`
+    );
+    const typeMap = {};
+    types[0].forEach(t => { typeMap[t.name] = t.id; });
+
+    await queryInterface.bulkInsert('Vehicles', [
+      { name: 'Royal Enfield Classic', typeId: typeMap['Cruiser'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Harley Davidson Street', typeId: typeMap['Cruiser'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Yamaha R15', typeId: typeMap['Sports'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Kawasaki Ninja', typeId: typeMap['Sports'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Maruti Swift', typeId: typeMap['Hatchback'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Hyundai i20', typeId: typeMap['Hatchback'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Toyota Fortuner', typeId: typeMap['SUV'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Mahindra XUV500', typeId: typeMap['SUV'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Honda City', typeId: typeMap['Sedan'], createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Hyundai Verna', typeId: typeMap['Sedan'], createdAt: new Date(), updatedAt: new Date() }
     ]);
   },
-
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Vehicles', null, {});
+    await queryInterface.bulkDelete('Vehicles', null, {});
   }
 };

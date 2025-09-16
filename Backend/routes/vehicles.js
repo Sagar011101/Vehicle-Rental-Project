@@ -1,9 +1,7 @@
-// Backend/routes/vehicles.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { getVehicles } = require('../controllers/vehicleController');
+const { getVehicles } = require("../controllers/vehicleController");
 
-// GET /api/vehicles?typeId=1
-router.get('/', getVehicles);
+router.get("/", getVehicles);
 
 module.exports = router;
